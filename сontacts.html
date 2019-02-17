@@ -4,9 +4,17 @@
 <meta charset="UTF-8"/>
 <title>Контакты | Знайки</title>
 <link rel="shortcut icon" href="images/icon.png" />
-<meta name="viewport" content="width=device-width; initial-scale=1.0">
-<link href="css/style.css" rel="stylesheet" type="text/css">
-<link href="css/media-queries.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="css/media-queries.css">
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/style.css">
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.maskedinput.js"></script>
+<script type="text/javascript">
+jQuery(function($){$("#phone").mask("+7 (999) 999-9999");$("#phone2").mask("+7 (999) 999-9999");});
+</script>
+<style>
+.signature{margin:30px 0;font-style:italic;text-align:right}
+</style>
 </head>
   <style>
    body {
@@ -33,24 +41,88 @@
 	<div id="content">
 		<article class="post clearfix">
 			<header>
-				<h1 class="post-title"><a href="#">Заголовок</a></h1>
-				<p class="post-meta"><time class="post-date" datetime="2019-05-08" pubdate>8 Мая, 2019г</time> <em></em> <a href="#">Категория</a></p>
+				<h1 class="post-title"><a href="#">СВЯЖИТЕСЬ СО МНОЙ</a></h1>
 			</header>
-			<figure class="post-image"> 
-				<div id="featured">
-					<p>Во время Великой Отечественной войны в июле — октябре 1941 года командующий Азовской военной флотилией, которая принимала участие в обороне Крыма и в Донбасско-Ростовской оборонительной операции. В октябре 1941 года снят с должности командующего за нарушение воинской дисциплины при проведении боевой операции и направлен в распоряжение управления по командному составу РККФ. </p>
-				</div>
-					</section>
 
+    <div class="post">
+    <br>
+    <div id="inline">
+    <div class="wrap"><h2>Обратная связь</h2></div>
+    <form id="contact" name="contact" action="#" method="post">
+	<input type="name" id="name" name="name" class="txt" placeholder="Ваше имя"><input type="phone" id="phone" name="phone" class="txt" placeholder="Ваш телефон"><input type="email" id="email" name="email" class="txt" placeholder="Ваш e-mail">
+	<textarea id="msg" name="msg" class="txtarea"  placeholder="Ваше сообщение:"></textarea>
+	<div class="wrap">
+	<input type="checkbox" id="agreement" onchange="document.getElementById('send').disabled = !this.checked;">
+	<label for="agreement"><span>Я согласен/согласна на отправку моих персональных данных!</span></label>
+	</div>
+	<div class="wrap"><button id="send" disabled>Отправить</button></div>
+    </form>
+</div>
+<script>
+function validateEmail(email) {
+    var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return reg.test(email);
+}
+    $(document).ready(function(){
+    $("#contact").submit(function(){return false;});
+    $("#send").on("click",function(){
+    var emailval=$("#email").val();
+    var namevl=$("#name").val();
+    var phonevl=$("#phone").val();
+    var msgval=$("#msg").val();
+    var msglen=msgval.length;
+    var mailvalid=validateEmail(emailval);
+    if(mailvalid==false){
+	$("#email").addClass("error");
+    }
+    else if(mailvalid==true){
+	$("#email").removeClass("error");
+    }
+    if(mailvalid==false){
+	$("#name").addClass("error");
+    }
+    else if(mailvalid==true){
+	$("#name").removeClass("error");
+    }
+    if(mailvalid==false) {
+	$("#phone").addClass("error");
+    }
+    else if(mailvalid==true){
+	$("#phone").removeClass("error");
+    }
+    if(msglen<4){
+	$("#msg").addClass("error");
+    }
+    else if(msglen>=4){
+	$("#msg").removeClass("error");
+    }
+    if(mailvalid==true&&msglen>=4){
+    // если обе проверки пройдены
+    // сначала мы скрываем кнопку отправки
+    $("#send").replaceWith("<em>отправка...</em>");
+	$.ajax({
+	type:'POST',
+	url:'sendmessage.php',
+	data:$("#contact").serialize(),
+	success:function(data){
+	    if(data=="true"){
+		$("#contact").fadeOut("fast", function(){
+		$(this).before("<p><strong>Ваше сообщение отправлено</strong></p>");
+		setTimeout("$.fancybox.close()",1000);
+	    });
+	    }
+	}
+	});
+    }
+    });
+});
+</script>
+</body>
 		</article>
 	</div>
 	<aside id="sidebar">
 		<section class="widget">
-			<h4 class="widgettitle">История школы</h4>
-						<img src="https://pics.photographer.ru/nonstop/pics/pictures/778/778230.jpg" class="centered-block paddingtop">
-						<h4>Переменка</h4>
-						<img src="http://21region.org/uploads/posts/2010-11/1290938908_4012222_large.jpg" class="centered-block paddingtop">
-
+<script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A81da538ba4c0981c8765e5377b141183854ab24568696dbbfc2a7e72b1ce64f0&amp;width=100%25&amp;height=415&amp;lang=ru_RU&amp;scroll=true"></script>
 		</section>				
 	</aside>
 	<footer id="footer">
